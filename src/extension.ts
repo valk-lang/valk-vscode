@@ -15,6 +15,7 @@ let client: LanguageClient;
 // Your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
 
+	vscode.window.showInformationMessage('✅ Valk extension Activated!');
 	console.log('Starting valk language server');
 
 	let outputChannel = vscode.window.createOutputChannel("Valk Language Server");
@@ -28,12 +29,12 @@ export function activate(context: vscode.ExtensionContext) {
 			run: {
 				command: cmd,
 				transport: TransportKind.stdio,
-				args: ['ls', 'start']
+				args: ['lsp', 'run']
 			},
 			debug: {
 				command: cmd,
 				transport: TransportKind.stdio,
-				args: ['ls', 'start']
+				args: ['lsp', 'run']
 			}
 		};
 
@@ -43,24 +44,28 @@ export function activate(context: vscode.ExtensionContext) {
 			traceOutputChannel: outputChannel
 		};
 
-		client = new LanguageClient(
-			'valkLanguageServer',
-			'Valk Language Server',
-			serverOptions,
-			clientOptions
-		);
+		try {
+			client = new LanguageClient(
+				'valkLanguageServer',
+				'Valk Language Server',
+				serverOptions,
+				clientOptions
+			);
 
-		client.start();
-
-	    console.log('Valk language server is running');
+			client.start();
+	    	console.log('Valk language server is running');
+		} catch (err){
+	    	console.error('Failed start the Valk language server: ', err);
+		}
 
 	}).catch(function () {
+		console.error("Could not find the 'valk' executable");
 		vscode.window.showErrorMessage("Valk is not installed or not added to the PATH environment variable");
 	});
 
-	// // The command has been defined in the package.json file
-	// // Now provide the implementation of the command with registerCommand
-	// // The commandId parameter must match the command field in package.json
+	// The command has been defined in the package.json file
+	// Now provide the implementation of the command with registerCommand
+	// The commandId parameter must match the command field in package.json
 	// const disposable = vscode.commands.registerCommand('valk-vscode.helloWorld', () => {
 	// 	// The code you place here will be executed every time your command is executed
 	// 	// Display a message box to the user

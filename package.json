@@ -1,15 +1,14 @@
 {
-  "name": "valk-vscode",
-  "displayName": "valk-vscode",
-  "description": "Valk vscode extension",
+  "name": "ext-test",
+  "displayName": "Ext Test",
+  "publisher": "me",
   "version": "0.0.1",
   "engines": {
-    "vscode": "^1.102.0"
+    "vscode": "^1.80.0"
   },
-  "categories": [
-    "Other"
+  "activationEvents": [
+    "onStartupFinished"
   ],
-  "activationEvents": [],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
@@ -60,25 +59,16 @@
     }
   },
   "scripts": {
-    "vscode:prepublish": "npm run compile",
     "compile": "tsc -p ./",
-    "watch": "tsc -watch -p ./",
-    "pretest": "npm run compile && npm run lint",
-    "lint": "eslint src",
-    "test": "vscode-test"
+    "watch": "tsc -watch -p ./"
   },
   "devDependencies": {
-    "@types/mocha": "^10.0.10",
-    "@types/node": "22.x",
+    "@types/node": "^24.2.1",
     "@types/vscode": "^1.102.0",
-    "@typescript-eslint/eslint-plugin": "^8.39.0",
-    "@typescript-eslint/parser": "^8.39.0",
-    "@vscode/test-cli": "^0.0.11",
-    "@vscode/test-electron": "^2.5.2",
-    "eslint": "^9.32.0",
-    "typescript": "^5.9.2"
+    "typescript": "^5.9.2",
+    "vscode-languageclient": "^9.0.1"
   },
   "dependencies": {
-    "vscode-languageclient": "^9.0.1"
+    "command-exists": "^1.2.9"
   }
 }
