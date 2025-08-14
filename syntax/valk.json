@@ -1,0 +1,141 @@
+{
+    "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+    "name": "valk",
+    "scopeName": "source.valk",
+    "fileTypes": ["valk", "valk.h"],
+    "patterns": [
+        {
+            "include": "#comments"
+        },
+        {
+            "include": "#strings"
+        },
+        {
+            "include": "#keywords"
+        },
+        {
+            "include": "#operators"
+        },
+        {
+            "include": "#numbers"
+        }
+    ],
+    "repository": {
+        "comments": {
+            "patterns": [
+                {
+                    "name": "comment.line.double-slash.valk",
+                    "begin": "//",
+                    "end": "$",
+                    "patterns": [
+                        {
+                            "include": "#commentContents"
+                        }
+                    ]
+                }
+            ]
+        },
+        "commentContents": {
+            "patterns": [
+                {
+                    "match": "\\b(TODO|NOTE)\\b:?",
+                    "name": "keyword.todo.valk"
+                }
+            ]
+        },
+        "keywords": {
+            "patterns": [
+                {
+                    "match": "\\b(while|if|else|let|throw|return)\\b",
+                    "name": "keyword.token.valk"
+                },
+                {
+                    "match": "^(fn|class|use|header)\\b",
+                    "name": "keyword.token-start.valk"
+                },
+                {
+                    "match": "\\b(void|u8|u16|u32|u64|uint|i8|i16|i32|i64|int|ptr|cstring)\\b",
+                    "name": "keyword.type.valk"
+                },
+                {
+                    "match": "\\b(print|println)\\b",
+                    "name": "keyword.print.valk"
+                },
+                {
+                    "name": "keyword.support",
+                    "match": "@[_a-zA-Z][_a-zA-Z0-9]*"
+                }
+            ]
+        },
+        "operators": {
+            "patterns": [
+                {
+                    "name": "keyword.operator.valk",
+                    "match": "(=|!|\\*|\\+|-|/|&|\\^|\\||:)"
+                }
+            ]
+        },
+        "strings": {
+            "patterns": [
+                {
+                    "name": "string.quoted.double.valk",
+                    "begin": "\"",
+                    "end": "\"",
+                    "patterns": [
+                        {
+                            "include": "#stringcontent"
+                        }
+                    ]
+                },
+                {
+                    "name": "string.quoted.single.valk",
+                    "match": "'([^'\\\\]|\\\\(x\\h{2}|[0-2][0-7]{,2}|3[0-6][0-7]?|37[0-7]?|[4-7][0-7]?|.))'"
+                }
+            ]
+        },
+        "stringcontent": {
+            "patterns": [
+                {
+                    "name": "constant.character.escape.valk",
+                    "match": "\\\\([nrt'\"\\\\]|(x[0-9a-fA-F]{2})|(u\\{[0-9a-fA-F]+\\}))"
+                },
+                {
+                    "name": "invalid.illegal.unrecognized-string-escape.valk",
+                    "match": "\\\\."
+                }
+            ]
+        },
+        "numbers": {
+            "patterns": [
+                {
+                    "name": "constant.numeric.hexfloat.valk",
+                    "match": "\\b0x[0-9a-fA-F][0-9a-fA-F_]*(\\.[0-9a-fA-F][0-9a-fA-F_]*)?([pP][+-]?[0-9a-fA-F_]+)?\\b"
+                },
+                {
+                    "name": "constant.numeric.float.valk",
+                    "match": "\\b[0-9][0-9_]*(\\.[0-9][0-9_]*)?([eE][+-]?[0-9_]+)?\\b"
+                },
+                {
+                    "name": "constant.numeric.decimal.valk",
+                    "match": "\\b[0-9][0-9_]*\\b"
+                },
+                {
+                    "name": "constant.numeric.hexadecimal.valk",
+                    "match": "\\b0x[a-fA-F0-9_]+\\b"
+                },
+                {
+                    "name": "constant.numeric.octal.valk",
+                    "match": "\\b0o[0-7_]+\\b"
+                },
+                {
+                    "name": "constant.numeric.binary.valk",
+                    "match": "\\b0b[01_]+\\b"
+                },
+                {
+                    "name": "constant.numeric.invalid.valk",
+                    "match": "\\b[0-9](([eEpP][+-])|[0-9a-zA-Z_])*(\\.(([eEpP][+-])|[0-9a-zA-Z_])*)?([eEpP][+-])?[0-9a-zA-Z_]*\\b"
+                }
+            ]
+        }
+    }
+}
