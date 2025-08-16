@@ -1,6 +1,6 @@
 {
-  "name": "ext-test",
-  "displayName": "Ext Test",
+  "name": "valk-vscode",
+  "displayName": "Valk vscode",
   "publisher": "me",
   "version": "0.0.1",
   "engines": {
