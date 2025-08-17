@@ -14,6 +14,9 @@
             "include": "#keywords"
         },
         {
+            "include": "#functions"
+        },
+        {
             "include": "#operators"
         },
         {
@@ -46,24 +49,44 @@
         "keywords": {
             "patterns": [
                 {
-                    "match": "\\b(while|if|else|let|throw|return)\\b",
-                    "name": "keyword.token.valk"
+                    "match": "\\b(while|if|else|let|throw|return|fn)\\b",
+                    "name": "keyword.control.valk"
                 },
                 {
-                    "match": "^(fn|class|use|header)\\b",
-                    "name": "keyword.token-start.valk"
+                    "match": "^\\s*(static|class|use|header|global|shared|enum)\\b",
+                    "name": "keyword"
                 },
                 {
-                    "match": "\\b(void|u8|u16|u32|u64|uint|i8|i16|i32|i64|int|ptr|cstring)\\b",
-                    "name": "keyword.type.valk"
+                    "match": "\\b(void|u8|u16|u32|u64|uint|i8|i16|i32|i64|int|ptr|cstring|String|Array|Map|HashMap)\\b",
+                    "name": "support.type"
                 },
+                {
+                    "name": "support.function",
+                    "match": "\\b@?[_a-zA-Z][_a-zA-Z0-9]*\\("
+                },
+                {
+                    "name": "keyword",
+                    "match": "@[_a-zA-Z][_a-zA-Z0-9]*\\b"
+                },
+                {
+                    "name": "support.constant",
+                    "match": "\\$[_a-zA-Z][_a-zA-Z0-9]*"
+                },
+                {
+                    "name": "constant.numeric",
+                    "match": "\\b[A-Z][A-Z0-9]*\\b"
+                }
+            ]
+        },
+        "functions": {
+            "patterns": [
                 {
                     "match": "\\b(print|println)\\b",
-                    "name": "keyword.print.valk"
+                    "name": "support.function"
                 },
                 {
-                    "name": "keyword.support",
-                    "match": "@[_a-zA-Z][_a-zA-Z0-9]*"
+                    "match": "\\b([_a-zA-Z][_a-zA-Z0-9]*)\\(",
+                    "name": "support.function"
                 }
             ]
         },
@@ -71,7 +94,7 @@
             "patterns": [
                 {
                     "name": "keyword.operator.valk",
-                    "match": "(=|!|\\*|\\+|-|/|&|\\^|\\||:)"
+                    "match": "(=|!|\\*|\\+|-|/|&|\\^|\\||:|<|>|%|\\?)"
                 }
             ]
         },

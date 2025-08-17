@@ -39,11 +39,6 @@
       "type": "object",
       "title": "Valk",
       "properties": {
-        "valk.buildOnSave": {
-          "type": "boolean",
-          "default": false,
-          "description": "Compiles code on file save using the settings specified in 'Build Option'."
-        },
         "valkLanguageServer.trace.server": {
           "scope": "window",
           "type": "string",
