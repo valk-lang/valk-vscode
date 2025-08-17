@@ -7,7 +7,6 @@ import * as stream from 'node:stream';
 import {
 	LanguageClient,
 	LanguageClientOptions,
-	ExecutableOptions,
 	ServerOptions,
 	TransportKind,
 	RevealOutputChannelOn,
@@ -28,21 +27,17 @@ export function activate(context: vscode.ExtensionContext) {
 
 	// const cmd = "valk";
 	const cmd = "/home/ctx/www/valk2/valk";
-	const options: ExecutableOptions = {
-	};
 
 	const serverOptions: ServerOptions = {
 		run: {
 			command: cmd,
 			transport: TransportKind.stdio,
 			args: ['lsp', 'run'],
-			options: options
 		},
 		debug: {
 			command: cmd,
 			transport: TransportKind.stdio,
 			args: ['lsp', 'run'],
-			options: options
 		}
 	};
 
