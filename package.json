@@ -1,7 +1,7 @@
 {
-  "name": "valk-vscode",
-  "displayName": "Valk vscode",
-  "publisher": "me",
+  "name": "valk",
+  "displayName": "Valk language support",
+  "publisher": "ctxcode",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.80.0"
@@ -13,7 +13,7 @@
   "contributes": {
     "commands": [
       {
-        "command": "valk-vscode.activate",
+        "command": "valk.activate",
         "title": "Valk extension activate"
       }
     ],
@@ -39,16 +39,11 @@
       "type": "object",
       "title": "Valk",
       "properties": {
-        "valkLanguageServer.trace.server": {
+        "valk.path": {
           "scope": "window",
           "type": "string",
-          "enum": [
-            "off",
-            "messages",
-            "verbose"
-          ],
-          "default": "off",
-          "description": "Traces the communication between VS Code and the language server."
+          "default": null,
+          "description": "Valk executable path"
         }
       }
     }
@@ -64,6 +59,5 @@
     "vscode-languageclient": "^9.0.1"
   },
   "dependencies": {
-    "command-exists": "^1.2.9"
   }
 }

@@ -20,13 +20,17 @@ let client: LanguageClient;
 // Your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
 
-	// vscode.window.showInformationMessage('✅ Valk extension Activated!');
 	console.log('Starting valk language server');
 
+	const config = vscode.workspace.getConfiguration('valk');
 	let outputChannel = vscode.window.createOutputChannel("Valk Language Server", { log: true });
+	var cmd = "valk";
 
-	// const cmd = "valk";
-	const cmd = "/home/ctx/www/valk2/valk";
+	// Check settings
+	const valk_path = config.get<null|string>('path');
+	if (valk_path) {
+		cmd = valk_path
+	}
 
 	const serverOptions: ServerOptions = {
 		run: {
@@ -43,7 +47,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 	// const serverOptions: ServerOptions = () => {
 	// 	// Spawn your language server
-	// 	const child = spawn("/home/ctx/www/valk2/valk", ["lsp", "run"], {
+	// 	const child = spawn("valk", ["lsp", "run"], {
 	// 		stdio: ['pipe', 'pipe', 'pipe']
 	// 	});
 
