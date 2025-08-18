@@ -2,7 +2,7 @@
   "name": "valk",
   "displayName": "Valk language",
   "publisher": "valk-lang",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "icon": "images/valk-logo.png",
   "repository": {
     "url": "https://github.com/valk-lang/valk-vscode"
@@ -29,7 +29,11 @@
           ".valk",
           ".valk.h"
         ],
-        "configuration": "./language-config.json"
+        "configuration": "./language-config.json",
+        "icon": {
+          "light": "./images/valk-logo-spacing.png",
+          "dark": "./images/valk-logo-spacing.png"
+        }
       }
     ],
     "grammars": [
