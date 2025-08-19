@@ -31,8 +31,7 @@ export function activate(context: vscode.ExtensionContext) {
 	if (valk_path) {
 		cmd = valk_path
 	}
-
-	const serverOptions: ServerOptions = {
+	var serverOptions: ServerOptions = {
 		run: {
 			command: cmd,
 			transport: TransportKind.stdio,
@@ -45,36 +44,40 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 	};
 
-	// const serverOptions: ServerOptions = () => {
-	// 	// Spawn your language server
-	// 	const child = spawn("valk", ["lsp", "run"], {
-	// 		stdio: ['pipe', 'pipe', 'pipe']
-	// 	});
+	const is_debug = config.get<boolean>('lsp_debug');
+	if (is_debug) {
 
-	// 	// Wrap stdout so we can log everything coming from the server
-	// 	const loggingReadable = new stream.PassThrough();
-	// 	child.stdout.pipe(loggingReadable);
+		serverOptions = () => {
+			// Spawn your language server
+			const child = spawn(cmd, ["lsp", "run"], {
+				stdio: ['pipe', 'pipe', 'pipe']
+			});
 
-	// 	loggingReadable.on('data', chunk => {
-	// 		outputChannel.appendLine("<<< " + chunk.toString());
-	// 	});
+			// Wrap stdout so we can log everything coming from the server
+			const loggingReadable = new stream.PassThrough();
+			child.stdout.pipe(loggingReadable);
 
-	// 	// Wrap stdin so we can log everything going to the server
-	// 	const loggingWritable = new stream.PassThrough();
-	// 	loggingWritable.pipe(child.stdin);
+			loggingReadable.on('data', chunk => {
+				outputChannel.appendLine("<<< " + chunk.toString());
+			});
 
-	// 	loggingWritable.on('data', chunk => {
-	// 		outputChannel.appendLine(">>> " + chunk.toString());
-	// 	});
+			// Wrap stdin so we can log everything going to the server
+			const loggingWritable = new stream.PassThrough();
+			loggingWritable.pipe(child.stdin);
 
-	// 	// Return a StreamInfo object for the client
-	// 	const result: StreamInfo = {
-	// 		reader: loggingReadable,
-	// 		writer: loggingWritable
-	// 	};
+			loggingWritable.on('data', chunk => {
+				outputChannel.appendLine(">>> " + chunk.toString());
+			});
 
-	// 	return Promise.resolve(result);
-	// };
+			// Return a StreamInfo object for the client
+			const result: StreamInfo = {
+				reader: loggingReadable,
+				writer: loggingWritable
+			};
+
+			return Promise.resolve(result);
+		};
+	}
 
 	const clientOptions: LanguageClientOptions = {
 		documentSelector: [{ scheme: "file", language: "valk" }],

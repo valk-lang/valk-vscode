@@ -2,7 +2,7 @@
   "name": "valk",
   "displayName": "Valk language",
   "publisher": "valk-lang",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "icon": "images/valk-logo.png",
   "repository": {
     "url": "https://github.com/valk-lang/valk-vscode"
@@ -15,13 +15,9 @@
   ],
   "main": "./out/extension.js",
   "contributes": {
-    "commands": [
-      {
-        "command": "valk.activate",
-        "title": "Valk extension activate"
-      }
-    ],
-    "configurationDefaults": {},
+    "configurationDefaults": {
+      "valk.path": null
+    },
     "languages": [
       {
         "id": "valk",
@@ -49,9 +45,15 @@
       "properties": {
         "valk.path": {
           "scope": "window",
-          "type": "string",
+          "type": ["string", "null"],
           "default": null,
           "description": "Valk executable path"
+        },
+        "valk.lsp_debug": {
+          "scope": "window",
+          "type": ["boolean"],
+          "default": false,
+          "description": "Valk LSP debug mode"
         }
       }
     }
@@ -63,7 +65,9 @@
   "devDependencies": {
     "@types/node": "^24.2.1",
     "@types/vscode": "^1.80.0",
-    "typescript": "^5.9.2",
+    "typescript": "^5.9.2"
+  },
+  "dependencies": {
     "vscode-languageclient": "^9.0.1"
   }
 }
