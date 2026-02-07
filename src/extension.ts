@@ -1,106 +1,32 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
-import { spawn } from 'node:child_process';
-import * as stream from 'node:stream';
+import { startLsp, stopLsp, restartLsp } from './lsp';
 
-import {
-	LanguageClient,
-	LanguageClientOptions,
-	ServerOptions,
-	TransportKind,
-	RevealOutputChannelOn,
-	Trace,
-	StreamInfo,
-} from 'vscode-languageclient/node';
-
-let client: LanguageClient;
 
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
 
-	console.log('Starting valk language server');
+	let output = vscode.window.createOutputChannel("Valk Language Server", { log: true });
+
+	context.subscriptions.push(
+		vscode.commands.registerCommand("valk.lsp.start", async () => {
+            await startLsp(context, output);
+        }),
+		vscode.commands.registerCommand("valk.lsp.stop", async () => {
+            await stopLsp(context, output);
+        }),
+		vscode.commands.registerCommand("valk.lsp.restart", async () => {
+            await restartLsp(context, output);
+        }),
+	)
 
 	const config = vscode.workspace.getConfiguration('valk');
-	let outputChannel = vscode.window.createOutputChannel("Valk Language Server", { log: true });
-	var cmd = "valk";
-
-	// Check settings
-	const valk_path = config.get<null|string>('path');
-	if (valk_path) {
-		cmd = valk_path
+	const enable = config.get<null|boolean>('enable')
+	if (enable !== false) {
+		startLsp(context, output)
 	}
-	var serverOptions: ServerOptions = {
-		run: {
-			command: cmd,
-			transport: TransportKind.stdio,
-			args: ['lsp', 'run'],
-		},
-		debug: {
-			command: cmd,
-			transport: TransportKind.stdio,
-			args: ['lsp', 'run'],
-		}
-	};
-
-	const is_debug = config.get<boolean>('lsp_debug');
-	if (is_debug) {
-
-		serverOptions = () => {
-			// Spawn your language server
-			const child = spawn(cmd, ["lsp", "run"], {
-				stdio: ['pipe', 'pipe', 'pipe']
-			});
-
-			// Wrap stdout so we can log everything coming from the server
-			const loggingReadable = new stream.PassThrough();
-			child.stdout.pipe(loggingReadable);
-
-			loggingReadable.on('data', chunk => {
-				outputChannel.appendLine("<<< " + chunk.toString());
-			});
-
-			// Wrap stdin so we can log everything going to the server
-			const loggingWritable = new stream.PassThrough();
-			loggingWritable.pipe(child.stdin);
-
-			loggingWritable.on('data', chunk => {
-				outputChannel.appendLine(">>> " + chunk.toString());
-			});
-
-			// Return a StreamInfo object for the client
-			const result: StreamInfo = {
-				reader: loggingReadable,
-				writer: loggingWritable
-			};
-
-			return Promise.resolve(result);
-		};
-	}
-
-	const clientOptions: LanguageClientOptions = {
-		documentSelector: [{ scheme: "file", language: "valk" }],
-		outputChannel: outputChannel,
-		traceOutputChannel: outputChannel,
-		revealOutputChannelOn: RevealOutputChannelOn.Info,
-	};
-
-	try {
-		client = new LanguageClient(
-			'valkLanguageServer',
-			'Valk Language Server',
-			serverOptions,
-			clientOptions
-		);
-		client.setTrace(Trace.Verbose);
-
-		client.start();
-		console.log('Valk language server is running');
-	} catch (err) {
-		console.error('Failed start the Valk language server: ', err);
-	}
-
 }
 
 // This method is called when your extension is deactivated

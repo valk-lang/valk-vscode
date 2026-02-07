@@ -49,14 +49,37 @@
           "default": null,
           "description": "Valk executable path"
         },
-        "valk.lsp_debug": {
+        "valk.lsp.enable": {
+          "scope": "window",
+          "type": ["boolean"],
+          "default": true,
+          "description": "Valk enable language server"
+        },
+        "valk.lsp.debug": {
           "scope": "window",
           "type": ["boolean"],
           "default": false,
           "description": "Valk LSP debug mode"
         }
       }
-    }
+    },
+    "commands": [
+      {
+        "command": "valk.lsp.start",
+        "title": "Start Valk Language Server",
+        "category": "Valk"
+      },
+      {
+        "command": "valk.lsp.stop",
+        "title": "Stop Valk Language Server",
+        "category": "Valk"
+      },
+      {
+        "command": "valk.lsp.restart",
+        "title": "Restart Valk Language Server",
+        "category": "Valk"
+      }
+    ]
   },
   "scripts": {
     "compile": "tsc -p ./",
