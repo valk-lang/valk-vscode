@@ -18,7 +18,7 @@ let client: LanguageClient | null;
 
 export async function startLsp(context: vscode.ExtensionContext, output: vscode.OutputChannel) {
 
-	console.log('Starting valk language server');
+	output.appendLine('Starting valk language server');
 
 	const config = vscode.workspace.getConfiguration('valk');
 	var cmd = "valk";
@@ -45,7 +45,7 @@ export async function startLsp(context: vscode.ExtensionContext, output: vscode.
 		}
 	};
 
-	const is_debug = config.get<boolean>('lsp_debug');
+	const is_debug = config.get<boolean>('lsp.debug');
 	if (is_debug) {
 
 		serverOptions = () => {
@@ -59,7 +59,7 @@ export async function startLsp(context: vscode.ExtensionContext, output: vscode.
 			child.stdout.pipe(loggingReadable);
 
 			loggingReadable.on('data', chunk => {
-				output.appendLine("<<< " + chunk.toString());
+				output.appendLine("Received: " + JSON.stringify(chunk.toString()));
 			});
 
 			// Wrap stdin so we can log everything going to the server
@@ -67,7 +67,7 @@ export async function startLsp(context: vscode.ExtensionContext, output: vscode.
 			loggingWritable.pipe(child.stdin);
 
 			loggingWritable.on('data', chunk => {
-				output.appendLine(">>> " + chunk.toString());
+				output.appendLine("Sent: " + JSON.stringify(chunk.toString()));
 			});
 
 			// Return a StreamInfo object for the client
@@ -97,9 +97,9 @@ export async function startLsp(context: vscode.ExtensionContext, output: vscode.
 		client.setTrace(Trace.Verbose);
 
 		client.start();
-		console.log('Valk language server is running');
+		output.appendLine('Valk language server is running');
 	} catch (err) {
-		console.error('Failed start the Valk language server: ', err);
+		output.appendLine('Failed start the Valk language server: ' + err);
 	}
 }
 
