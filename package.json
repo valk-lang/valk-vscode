@@ -2,7 +2,7 @@
   "name": "valk",
   "displayName": "Valk language",
   "publisher": "valk-lang",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "icon": "images/valk-logo.png",
   "repository": {
     "url": "https://github.com/valk-lang/valk-vscode"
@@ -45,26 +45,36 @@
       "properties": {
         "valk.path": {
           "scope": "window",
-          "type": ["string", "null"],
+          "type": [
+            "string",
+            "null"
+          ],
           "default": null,
           "description": "Valk executable path"
         },
         "valk.lsp.enable": {
           "scope": "window",
-          "type": ["boolean"],
+          "type": [
+            "boolean"
+          ],
           "default": true,
           "description": "Valk enable language server"
         },
         "valk.lsp.debug": {
           "scope": "window",
-          "type": ["boolean"],
+          "type": [
+            "boolean"
+          ],
           "default": false,
           "description": "Valk LSP debug mode"
         },
         "valk.lsp.diagnosticsMode": {
           "scope": "window",
           "type": "string",
-          "enum": ["save", "change"],
+          "enum": [
+            "save",
+            "change"
+          ],
           "enumDescriptions": [
             "Check diagnostics when a document is opened or saved.",
             "Check diagnostics after each coalesced edit batch."
