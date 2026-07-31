@@ -16,6 +16,14 @@ import {
 
 let client: LanguageClient | null;
 
+type DiagnosticsMode = 'save' | 'change';
+
+function diagnosticsMode(): DiagnosticsMode {
+	return vscode.workspace
+		.getConfiguration('valk')
+		.get<DiagnosticsMode>('lsp.diagnosticsMode', 'save');
+}
+
 export async function startLsp(context: vscode.ExtensionContext, output: vscode.OutputChannel) {
 
 	output.appendLine('Starting valk language server');
@@ -85,6 +93,9 @@ export async function startLsp(context: vscode.ExtensionContext, output: vscode.
 		outputChannel: output,
 		traceOutputChannel: output,
 		revealOutputChannelOn: RevealOutputChannelOn.Info,
+		initializationOptions: {
+			diagnosticsMode: diagnosticsMode(),
+		},
 	};
 
 	try {
@@ -96,11 +107,27 @@ export async function startLsp(context: vscode.ExtensionContext, output: vscode.
 		);
 		client.setTrace(Trace.Verbose);
 
-		client.start();
+		await client.start();
 		output.appendLine('Valk language server is running');
 	} catch (err) {
+		client = null;
 		output.appendLine('Failed start the Valk language server: ' + err);
 	}
+}
+
+// Forward the VS Code setting in the flat shape expected by the Valk server.
+// The initialization option above covers startup; this notification applies a
+// change immediately without restarting the language server.
+export async function updateDiagnosticsMode() {
+	const activeClient = client;
+	if (!activeClient || !activeClient.isRunning()) return;
+	await activeClient.sendNotification('workspace/didChangeConfiguration', {
+		settings: {
+			valk: {
+				diagnosticsMode: diagnosticsMode(),
+			},
+		},
+	});
 }
 
 export async function stopLsp(context: vscode.ExtensionContext, output: vscode.OutputChannel) {

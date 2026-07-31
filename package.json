@@ -60,6 +60,17 @@
           "type": ["boolean"],
           "default": false,
           "description": "Valk LSP debug mode"
+        },
+        "valk.lsp.diagnosticsMode": {
+          "scope": "window",
+          "type": "string",
+          "enum": ["save", "change"],
+          "enumDescriptions": [
+            "Check diagnostics when a document is opened or saved.",
+            "Check diagnostics after each coalesced edit batch."
+          ],
+          "default": "save",
+          "description": "Controls when the Valk language server checks diagnostics."
         }
       }
     },
